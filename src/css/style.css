@@ -1,0 +1,62 @@
+body {
+  /*background: #0B161D;*/
+  background: #252525;
+  color: white;
+}
+
+*, *::before, *::after  {
+  box-sizing: border-box;
+}
+
+h3 {
+  border-bottom: 1px solid;
+}
+
+button, input, select {
+  padding: 0.5em;
+  margin-bottom: 1em;
+}
+
+button {
+  width: 100%;
+}
+
+select, input[type='text'] {
+  width: 100%;
+}
+
+.connected {
+  color: #8cffa7;
+}
+
+.disconnected {
+  color: #ff8ca7;
+}
+
+#recording-template {
+  /*border: 1px solid blue;*/
+  font-size: 150%;
+  font-family: monospace;
+  text-align: center;
+  padding-bottom: 0.5em;
+}
+
+#connection-state {
+  /*border: 1px solid blue;*/
+  font-size: 90%;
+  text-align: center;
+
+  position: fixed;
+  padding: 0 0.5em 0.5em;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+}
+
+#video-name-container {
+
+}
+
+#video-scene-container {
+
+}

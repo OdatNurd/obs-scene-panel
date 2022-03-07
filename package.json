@@ -1,0 +1,30 @@
+{
+    "name": "obs-scene-record",
+    "version": "1.0.0",
+    "description": "Panel page for changing the recording filename in OBS Studio",
+    "main": "index.js",
+    "author": "Terence Martin <odatnurd@gmail.com>",
+    "license": "MIT",
+    "private": false,
+    "scripts": {
+        "build": "parcel build",
+        "watch": "parcel"
+    },
+    "targets": {
+        "default": {
+            "source": [
+                "src/index.html"
+            ]
+        }
+    },
+    "devDependencies": {
+        "buffer": "^6.0.3",
+        "events": "^3.3.0",
+        "parcel": "^2.3.2",
+        "process": "^0.11.10"
+    },
+    "dependencies": {
+        "obs-websocket-js": "^4.0.3",
+        "sanitize-filename": "^1.6.3"
+    }
+}
