@@ -39,8 +39,6 @@ const templateTxt = document.getElementById('recording-template');
  * Note that it is up to the caller to make sure that they don't make a request
  * for something for which Obs already has an event. */
 function sendAsEvent(obs, request, ...args) {
-  // I'm not sure if it's a failing in the library or a failing in my
-  // understanding, but it would
   obs.send(request, ...args)
      .then(data => obs.emit(request, data))
      .catch(err => console.log(`[OBS] Error requesting ${request}`));
@@ -188,7 +186,7 @@ function receiveFormatString(formatString) {
 
   // Check the incoming string to see if it matches the format that we expect;
   // if so, then use it to populate the fields before we continue.
-  const match = formatString.match(/^%CCYY%MM%DD_%hh%mm_(.*)_Scene_(\d+)$/);
+  const match = formatString.match(/^%hh%mm_(.*)_Scene_(\d+)$/);
   if (match !== null) {
     videoNameFld.value = match[1].replace(/_/g, ' ');
     sceneNmbrFld.value = match[2];
@@ -217,8 +215,9 @@ function receiveFormatString(formatString) {
  * disabled and we request the new format string so that the form will update
  * with the results when they return, also enabling the controls. */
 function sendFormatString(obs) {
-  // Get the current video name and scene, if any.
-  const video = videoNameFld.value.trim();
+  // Get the current video name and scene, if any. We trim all leading/trailing
+  // whitespace from the video name, and title case it.
+  const video = videoNameFld.value.trim().replace(/(^|\s)\S/g, t => t.toUpperCase());
   const scene = parseInt(sceneNmbrFld.value);
 
   // If the video name is empty or the scene is not a number, then just leave
@@ -228,7 +227,7 @@ function sendFormatString(obs) {
   }
 
   // Create the new template filename and display it.
-  const template = `%CCYY%MM%DD_%hh%mm_${sanitize(video.replace(/\s/g, '_'))}_Scene_${scene}`;
+  const template = `%hh%mm_${sanitize(video.replace(/\s/g, '_'))}_Scene_${scene}`;
   console.log(`[OBS] Changing filename template to '${template}'`);
 
   // Disable all of the form controls, and then send away a message to ask OBS
@@ -284,7 +283,7 @@ async function setup() {
 
   // When a recording stops, trigger a request for the current format string and
   // use it to re-enable and re-populate the panel.
-  obs.on('RecordingStopped', data => sendAsEvent(obs, 'GetFilenameFormatting'));
+  obs.on('RecordingStopped', data => bumpSceneNumber(obs, true));
 
   // When we get a response from setting the filename to be used to record,
   // respond by asking what the new filename is, so that the panel will update
